@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "NModcom.Tests": {
+      "commandName": "Project"
+    }
+  }
+}
