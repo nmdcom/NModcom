@@ -11,9 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NModcom.Tests", "NModcom.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NModcom.Util", "NModcom.Util\NModcom.Util.csproj", "{B62FC5FA-B1C1-4AC3-AB81-4B4B088A7770}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimObj.Documentation.App", "SimObj.Documentation.App\SimObj.Documentation.App.csproj", "{D3E33FA7-583D-49DA-BC80-01FE1FCFAEE1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NModcom.ExampleApp", "NModcom.ExampleApp\NModcom.ExampleApp.csproj", "{FCB98613-0E7F-4034-96C7-C1F400595B46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NModcom.ExampleApp", "NModcom.ExampleApp\NModcom.ExampleApp.csproj", "{FCB98613-0E7F-4034-96C7-C1F400595B46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{B62FC5FA-B1C1-4AC3-AB81-4B4B088A7770}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B62FC5FA-B1C1-4AC3-AB81-4B4B088A7770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B62FC5FA-B1C1-4AC3-AB81-4B4B088A7770}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3E33FA7-583D-49DA-BC80-01FE1FCFAEE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3E33FA7-583D-49DA-BC80-01FE1FCFAEE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3E33FA7-583D-49DA-BC80-01FE1FCFAEE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3E33FA7-583D-49DA-BC80-01FE1FCFAEE1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCB98613-0E7F-4034-96C7-C1F400595B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCB98613-0E7F-4034-96C7-C1F400595B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCB98613-0E7F-4034-96C7-C1F400595B46}.Release|Any CPU.ActiveCfg = Release|Any CPU

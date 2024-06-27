@@ -486,10 +486,6 @@ namespace NModcom
             get { return outputs; }
         }
 
-        void ISimObj.Initialize() => Initialize();
-        protected virtual void Initialize()
-        { }
-
         public virtual void StartRun()
         {
         }

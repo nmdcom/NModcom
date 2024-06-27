@@ -272,10 +272,6 @@ namespace NModcom
             get;
         }
 
-        /// <summary>
-        /// This method can be called when some initialization of the model is needed.
-        /// </summary>
-        void Initialize();
 
         /// <summary>
         /// Called by the simulation environment just before the simulation starts.
