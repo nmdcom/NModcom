@@ -295,12 +295,4 @@ namespace NModcom
         void HandleEvent(ISimEvent simEvent);
     }
 
-    public interface ISimObj<T> : ISimObj
-        where T : class
-    {
-        /// <summary>
-        /// This method can be called when some initialization of the model is needed.
-        /// </summary>
-        void Initialize(T configuration);
-    }
 }
