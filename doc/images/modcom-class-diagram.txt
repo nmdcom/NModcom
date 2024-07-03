@@ -1,0 +1,61 @@
+@startuml
+interface ISimEnv {
+  StartTime
+  StopTime
+  CurrentTime
+  Add()
+  Step()
+  Run()
+}
+
+interface ISimObj {
+  Name
+  StartRun()
+  EndRun()
+  HandleEvent()
+}
+  
+interface IIntegrator
+
+interface ISimEvent
+
+ISimObj -[hidden]> ISimEvent
+
+interface IInput {
+  Name
+  Units
+  InputKind
+}
+
+interface IOutput {
+  Name
+  Units
+  OutputKind
+}
+
+interface IData {
+  AsFloat
+  AsString
+}
+
+interface IOdeProvider {
+  GetRates()
+  Get/SetState()
+}
+
+ISimEnv o-- ISimObj
+ISimObj *-- IInput
+ISimEvent -[dotted]->  ISimObj
+ISimObj *-- IOutput
+IInput -[dotted]-> IData
+IOutput *-- IData
+
+ISimEnv *-- ISimEvent
+ISimObj <|.. Predator
+IOdeProvider <|.. Predator
+
+IIntegrator <|.. EulerIntegrator
+ISimEnv *-- IIntegrator
+
+IIntegrator -[dotted]-> IOdeProvider
+@enduml

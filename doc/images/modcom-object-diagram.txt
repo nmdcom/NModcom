@@ -1,0 +1,28 @@
+@startuml
+together {
+  object env
+  object expGrowth 
+}
+
+together {
+  object input_T {
+    name = "T" 
+  }
+  object output_T {
+    name = "T" 
+  }
+}
+
+together { 
+  object T  {
+    value = "18.5" 
+  }
+}
+
+env *-- output_T
+output_T *-- T
+expGrowth *-- input_T
+
+
+T .. input_T
+@enduml

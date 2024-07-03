@@ -1,0 +1,25 @@
+@startuml
+SimEnv -> SimEnv: Output
+
+SimEnv -> Integrator: Step
+
+Integrator -> Ode1: GetState
+Integrator <-- Ode1
+
+Integrator -> Ode1: GetRate
+Integrator <-- Ode1
+
+Integrator -> Ode2: GetState
+Integrator <-- Ode2: 
+
+Integrator -> Ode2: GetRate
+Integrator <-- Ode2: 
+
+Integrator -> Integrator: Calculate new states
+
+Integrator -> Ode1: SetState
+
+Integrator -> Ode2: SetState
+
+SimEnv <-- Integrator: Step finished
+@enduml
