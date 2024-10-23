@@ -89,8 +89,199 @@ In MODCOM time is always represented as a double precision floating point number
 MODCOM provides a CalendarTime class which can be used to convert between simulation time and calendar time in a standard way. This class uses .NET DateTime class to represents dates and times with values ranging from 00:00:00 (midnight), January 1, 0001 through 11:59:59 P.M., December 31, 9999.
 
 
-## Implement a model using MODCOM
-TBD
+## Write a simulation with MODCOM
+
+In this example, we use Visual Studio to create a new, empty console application, this gives us the following program:
+
+```
+Console.WriteLine("Hello, World!");
+```
+
+Add a reference to the NModcom source code in your new project. Then replace the code above with the code below:
+```
+using NModcom;
+ISimEnv simenv = new SimEnv();
+simenv.Run();
+```
+You can compile and run this program but it will not do anything interesting!
+ 
+Now we will create a model that we can add to the simulation. In the solution explorer, right-click on your  project and  select “Add | New item | C# class”. VS will create a new class with name “Class1” – you can rename this to “ExpGrowth” in the solution explorer. Then modify the code in ExpGrowth.cs as shown below.
+
+```
+using NModcom;
+ 
+namespace ConsoleApp1
+{
+    public class ExpGrowth: SimObj, IOdeProvider
+    {
+    }
+}
+```
+Now we have defined a class which is based on a parent class “SimObj” and which implements the IOdeProvider interface. 
+Parent class SimObj is part of the framework and provides a basic implementation of the ISimObj interface. SimObj and classes derived from are able to take part in a simulation, store a name, and keep track of inputs and outputs. Implementing IOdeProvider will allow our new class to use numerical integration.
+Right-click on IOdeProvider and then select “Quick Actions and Refactorings | Implement interface”. Do the same for IOdeProvider. Then modify the code as shown below. You have now written a complete MODCOM model for exponential growth!
+
+
+```
+using NModcom;
+ 
+namespace ConsoleApp1
+{
+    public class ExpGrowth : SimObj, IOdeProvider
+    {
+        double rgr = 0.1;
+ 
+        double S = 1;
+ 
+        // This method returns the number of state variables.
+        public int GetCount()
+        {
+            return 1;
+        }
+ 
+        // Called by the integrator to obtain rates for all state variables.
+        // "deriv" is an array to hold rates upon return.
+        // "index" is the index into deriv where the rate for the first state variable
+        // should be stored (subsequent rates go in adjacent elements).
+        public void GetDerivatives(double[] deriv, int index)
+        {
+            deriv[index] = S * rgr;
+        }
+ 
+        // Called by the integrator to get the current state.
+        // The integrator will update the state values and then pass the array
+        // to the SetState method.
+        // “state" is the array holding the states of all component models
+        // “index" is the index into the array where values should be copied.
+        public void GetState(double[] state, int index)
+        {
+            state[index] = S;
+        }
+ 
+        // Called by the integrator with the newly calculated state.
+        public void SetState(double[] state, int index)
+        {
+            S = state[index];
+        }
+    }
+}
+```
+Now we can add the model to simulation environment as shown below. While we are at it, we also add a few lines of code to collect model output. 
+
+```
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+            ISimEnv simenv = new SimEnv
+            {
+                StartTime = 0,
+                StopTime = 4
+            };
+            ISimObj simobj = new ExpGrowth();
+            simenv.Add(simobj);
+            simenv.OutputEvent += Simenv_OutputEvent;
+            simenv.Run();
+        }
+ 
+        private static void Simenv_OutputEvent(object sender, EventArgs e)
+        {
+            ISimEnv simenv = sender as ISimEnv;
+            Console.WriteLine("{0}\t{1}"
+                 , simenv.CurrentTime
+                 , simenv[0].Outputs[0].Data.AsFloat);
+        }
+    }
+}
+```
+
+When we run the simulation, it will produce the following output:
+
+
+```
+0       1
+1       1.1
+2       1.2100000000000002
+3       1.3310000000000002
+4       1.4641000000000002
+```
+
+But there is a problem: if you run the simulation twice, by adding a second line “simenv.Run()” at the end of the main program, it will produce different output! The reason for this is that we have not yet explicitly put our  model in an initial state. The ISimObj interface does provide a mechanism for this: method StartRun() is always called before a simulation starts. if you add the following code to ExpGrowth.cs, the simulation will produce the same output no matter how often it is run.
+
+```
+public override void StartRun()
+{
+    S = 1;
+}
+```
+
+The input to the exponential growth model consists of an initial state (S=1) and a value for the relative growth rate (rgr=0.1) and is hard-coded. By adding the following two lines to the definition of the ExpGrowth class, we define an input to the model that is visible from the outside.
+
+
+```
+[Input("rgr")]
+IData rgr_in;
+```
+We use this input in StartRun() to initialize the model’s state variable. The complete ExpGrowth class is shown below.
+
+```
+public class ExpGrowth : SimObj, IOdeProvider
+{
+    [Input("rgr")]
+    IData rgr_in;
+ 
+    [Input("T")]
+    IData temperature;
+ 
+    double rgr = 0.1;
+ 
+    [Output("S")]
+    double S = 1;
+ 
+    public int GetCount()
+    {
+        return 1;
+    }
+ 
+    public void GetDerivatives(double[] deriv, int index)
+    {
+        double f;
+        double t = temperature.AsFloat;
+        if (t <= 5)
+            f = 0;
+        else if (t >= 20)
+            f = 1;
+        else
+            f = (t - 5)/15;
+        deriv[index] = S * rgr * f;
+    }
+ 
+    public void GetState(double[] state, int index)
+    {
+        state[index] = S;
+    }
+ 
+    public void SetState(double[] state, int index)
+    {
+        S = state[index];
+    }
+ 
+    public override void StartRun()
+    {
+        S = 1;
+        if (rgr_in != null)
+            rgr = rgr_in.AsFloat;
+    }
+}
+```
+We can provide a value for this input in Program.cs as follows:
+
+```
+simobj.Inputs["rgr"].Data = new ConstFloatSimData(0.2);
+```
 
 ## Run a simulation with two component models
 TBD
