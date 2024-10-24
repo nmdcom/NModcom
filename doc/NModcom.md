@@ -105,7 +105,7 @@ simenv.Run();
 ```
 You can compile and run this program but it will not do anything interesting!
  
-Now we will create a model that we can add to the simulation. In the solution explorer, right-click on your  project and  select “Add | New item | C# class”. VS will create a new class with name “Class1” – you can rename this to “ExpGrowth” in the solution explorer. Then modify the code in ExpGrowth.cs as shown below (complete code: [ExpGrowth.cs](/NModcom.ExampleApp/NModcom.ExampleApp/ExpGrowth.cs)).
+Now we will create a model that we can add to the simulation. In the solution explorer, right-click on your  project and  select “Add | New item | C# class”. VS will create a new class with name “Class1” – you can rename this to “ExpGrowth” in the solution explorer. Then modify the code in ExpGrowth.cs as shown below (complete code: [ExpGrowth.cs](/https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/ExpGrowth.cs)).
 
 ```
 using NModcom;
