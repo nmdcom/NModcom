@@ -2,6 +2,8 @@
 
 ## SimEnv
 
+[[Code for this section]](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
+
 A MODCOM simulation is always coordinated by a class that implements ISimEnv, for example the SimEnv class that is part of the framework. At a minimum, you must provide the start- and stoptime of the simulation. Then the simulation can be run by invoking the Run() method:
 
 ```
@@ -22,11 +24,11 @@ StopTime = CalendarTime.ToDouble(new DateTime(2024, 3, 25))
 ```
 
 
-See this [code](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
-
 ## SimObj 
 
-A simulation without any model code is of no use. We want to add at least one model to the simulation. This can be done by writing a class that implements the ISimObj interface, for example by inheriting from the utility class SimObj. This is shown in the code below ([code](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)).
+[[Code for this section]](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)
+
+A simulation without any model code is of no use. We want to add at least one model to the simulation. This can be done by writing a class that implements the ISimObj interface, for example by inheriting from the utility class SimObj. This is shown in the code below.
 
 
 ```
