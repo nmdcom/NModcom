@@ -33,4 +33,9 @@ or across the globe.
 NMODCOM is a C# implementation based on the C++ code from Hillyer et al. (2003). The 
 first version of NMODCOM was written in 2004 by Arjan Lamaker and Frits van Evert.
 
-Link to [Documentation](doc/NModcom.md) .
+Further information:
+
+* [Tutorial](doc/Tutorial.md) 
+
+* [Documentation](doc/NModcom.md) 
+

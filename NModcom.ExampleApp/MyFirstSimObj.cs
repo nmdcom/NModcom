@@ -24,18 +24,24 @@
  * ================================================================================
 */
 
+
+
 namespace NModcom.ExampleApp
 {
-    internal class Program
+    internal class MyFirstSimObj : SimObj
     {
-        static void Main()
+        [Output("my output")]
+        IData myOutput = new ConstFloatSimData(0.0);
+
+        public override void StartRun()
         {
-            SimEnvOnly.RunSimulation();
-            SimEnvOnly.RunSimulationCalendar();
-            SimObjHowToUse.RunSimulation();
-            DiscreteEvent.RunSimulation();
-            //BouncingBall.RunSimulation();
-            CropAndWeather.RunSimulation();
+            myOutput.AsFloat = 3.14;
         }
+
+        public override void HandleEvent(ISimEvent simEvent)
+        {
+            myOutput.AsFloat += 1.0;
+        }
+
     }
 }

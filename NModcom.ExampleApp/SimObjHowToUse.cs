@@ -24,18 +24,43 @@
  * ================================================================================
 */
 
+
 namespace NModcom.ExampleApp
 {
-    internal class Program
+    internal class SimObjHowToUse
     {
-        static void Main()
+        public static void RunSimulation()
         {
-            SimEnvOnly.RunSimulation();
-            SimEnvOnly.RunSimulationCalendar();
-            SimObjHowToUse.RunSimulation();
-            DiscreteEvent.RunSimulation();
-            //BouncingBall.RunSimulation();
-            CropAndWeather.RunSimulation();
+            Console.WriteLine("Simulation with SimEnv and SimObj");
+
+            ISimEnv simenv = new SimEnv()
+            {
+                StartTime = 0,
+                StopTime = 5
+            };
+
+            ISimObj mySimObj = new MyFirstSimObj()
+            {
+                Name = "Test"
+            };
+
+            simenv.Add(mySimObj);
+
+            simenv.RegisterEvent(new TimeEvent(mySimObj, mySimObj, 0, 0, 3.0 ));
+
+            simenv.OutputEvent += Simenv_OutputEvent;
+            simenv.Run();
+        }
+
+        private static void Simenv_OutputEvent(object sender, EventArgs e)
+        {
+            ISimEnv ?simenv = sender as ISimEnv;
+            DateTime dateTime = CalendarTime.ToDateTime(simenv.CurrentTime);
+            Console.WriteLine($"{dateTime.ToString("yyyy-MM-dd")}\t{simenv[0].Outputs[0].Data.AsFloat}");
+
+            simenv[0].Outputs[0].Data.AsFloat = 1;
+            simenv[0].Outputs["my output"].Data.AsFloat = 1;
+
         }
     }
 }

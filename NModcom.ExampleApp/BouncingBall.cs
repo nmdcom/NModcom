@@ -24,18 +24,21 @@
  * ================================================================================
 */
 
+
 namespace NModcom.ExampleApp
 {
-    internal class Program
+    /// <summary>
+    /// implement the bouncing ball example from the book by Wainer et al. on multi-paradigm modeling
+    /// Euler with several time steps
+    /// RK
+    /// state event (for bouncing)
+    /// time event (for explosion?)
+    /// </summary>
+    internal class BouncingBall
     {
-        static void Main()
+        internal static void RunSimulation()
         {
-            SimEnvOnly.RunSimulation();
-            SimEnvOnly.RunSimulationCalendar();
-            SimObjHowToUse.RunSimulation();
-            DiscreteEvent.RunSimulation();
-            //BouncingBall.RunSimulation();
-            CropAndWeather.RunSimulation();
+            throw new NotImplementedException();
         }
     }
 }

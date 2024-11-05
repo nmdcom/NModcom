@@ -20,26 +20,21 @@ The interface that defines a simulation environment. One, two, or more component
 ### ISimObj
 The interface that defines a component model. Component models have inputs (for parameters and external influences) and outputs (to learn about the state of the model). 
 
-ISimObj instances may receive ISimEvent instances via a call to HandleEvent(). An ISimObj is expected to implement model-specific behaviour when it receives an ISimEvent. ISimObj implementations can register new ISimEvent�s with the ISimEnv where they are registered. The ISimEvent mechanism is therefore suffficient to implement both discrete-event and discrete-time simulations. See also �Time events and the event list1.3.
+ISimObj instances may receive ISimEvent instances via a call to HandleEvent(). An ISimObj is expected to implement model-specific behaviour when it receives an ISimEvent. ISimObj implementations can register new instances of ISimEvent with the ISimEnv where they are registered. The ISimEvent mechanism is therefore suffficient to implement both discrete-event and discrete-time simulations. See also "Time events and the event list" (below).
 
 ISimObj instances that implement a model that is specified using differential equations request numerical integration services by implementing the IOdeProvider interface.
 
 ### IData
-The interface that defines a data element to be exchanged between ISimObj�s. The outputs of an ISimObj hold an IData instance. The inputs of an ISimObj can hold a pointer to an IData instance. In this way, the output of one ISimObj can be used as in input for one or more other ISimObj instances.
+The interface that defines a data element to be exchanged between ISimObj instances. The outputs of an ISimObj hold an IData instance. The inputs of an ISimObj can hold a pointer to an IData instance. In this way, the output of one ISimObj can be used as in input for one or more other ISimObj instances.
 
 ### IIntegrator
 Defines the behaviour of numerical integration classes.
 
 ### IOdeProvider
-When this interface is implemented by a class that also implements ISimObj, it signals that this class (model) requires numerical integration services (it is a �provider� of Ordinary Differential Equations).
+When this interface is implemented by a class that also implements ISimObj, it signals that this class (model) requires numerical integration services (it is a "provider" of Ordinary Differential Equations).
 
 ### ISimEvent
 The  simulation environment maintains a list of objects that implement ISimEvent. This list is sorted by time (and priority, when two ISimEvent instances have the same time). When simulation time reaches the event time of an ISimEvent, appropriate action is taken.
-
-### Example model: Predator
-Predator is an example of the implementation of a model (here: growth of a predatory species of animal). Predator is not a framework class and is shown here only to clarify the relationship between a model implementation and the framework. Predator is a component model and therefore must implement ISimObj. It is also a differential equation-based model that requires the services of a numerical integrator; for this reason, it implements the IOdeProvider interface.
-
-
 
 ## Data exchange between component models
 Component models can exchange data in the form of objects that implement the IData interface. The UML object below illustrates this.
