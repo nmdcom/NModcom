@@ -1,6 +1,11 @@
 # MODCOM Tutorial
 
-## SimEnv
+
+1. [Working with simulation environment (SimEnv) class](#SimEnv)
+2. [SimObj](#SimObj)
+3. [UpdateableSimObj](#UpdateableSimObj)
+
+## SimEnv <a name="SimEnv"></a>
 
 [[Code for this section]](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
 
@@ -24,7 +29,7 @@ StopTime = CalendarTime.ToDouble(new DateTime(2024, 3, 25))
 ```
 
 
-## SimObj 
+## SimObj <a name="SimObj"></a>
 
 [[Code for this section]](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)
 
@@ -118,7 +123,7 @@ When we run this simulation, it produces the following output:
 [TODO insert output here]
 ```
 
-## UpdateableSimObj
+## UpdateableSimObj <a name="UpdateableSimObj"></a>
 
 
 [Discrete events model](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/DiscreteEvents.cs)
