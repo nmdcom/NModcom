@@ -1,4 +1,4 @@
-# MODCOM Tutorial
+# MODCOM Tutorial <a name="Tutorial"></a>
 
 
 1. [Working with simulation environment (SimEnv) class](#SimEnv)
@@ -7,7 +7,8 @@
 
 ## SimEnv <a name="SimEnv"></a>
 
-[[Code for this section]](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
+[Back to top](#Tutorial) |
+[View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
 
 A MODCOM simulation is always coordinated by a class that implements ISimEnv, for example the SimEnv class that is part of the framework. At a minimum, you must provide the start- and stoptime of the simulation. Then the simulation can be run by invoking the Run() method:
 
@@ -31,7 +32,7 @@ StopTime = CalendarTime.ToDouble(new DateTime(2024, 3, 25))
 
 ## SimObj <a name="SimObj"></a>
 
-[[Code for this section]](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)
+[Back to top](#Tutorial) | [View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)
 
 A simulation without any model code is of no use. We want to add at least one model to the simulation. This can be done by writing a class that implements the ISimObj interface, for example by inheriting from the utility class SimObj. This is shown in the code below.
 
@@ -126,7 +127,8 @@ When we run this simulation, it produces the following output:
 ## UpdateableSimObj <a name="UpdateableSimObj"></a>
 
 
-[Discrete events model](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/DiscreteEvents.cs)
+[Back to top](#Tutorial) |
+[Code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/DiscreteEvents.cs)
 
 
 ## OdeProvider
