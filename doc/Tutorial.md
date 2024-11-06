@@ -1,16 +1,19 @@
 # MODCOM Tutorial <a name="Tutorial"></a>
 
+This tutorial explains step-by-step how to use NMODCOM to create and run dynamic simulations.
 
 1. [Working with the simulation environment  ](#SimEnv)
 2. [Working with a simulation object ](#SimObj)
 3. [UpdateableSimObj](#UpdateableSimObj)
 
-## SimEnv <a name="SimEnv"></a>
+## Working with the simulation environment <a name="SimEnv"></a>
 
 [Back to top](#Tutorial) |
 [View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
 
-The first step in creating a MODCOM simulation is setting up the simulation environment. The simulation environment is a class that keeps track of the component models in a simulation and coordinates their interactions. The behaviour of the simulation environment is defined by the ISimEnv interface. The MODCOM framework provides SimEnv, a class that implements ISimEnv. Using SimEnv to create a simulation is as simple as providing start- and stoptime of the simulation. Then the simulation can be run by invoking the Run() method.
+The first step in creating a MODCOM simulation is setting up the simulation environment. The simulation environment is a class that keeps track of the component models in a simulation and coordinates their interactions. The behaviour of the simulation environment is defined by the ISimEnv interface. The MODCOM framework provides SimEnv, a class that implements ISimEnv. 
+
+You can set up a simulation by creating an instance of SimEnv. Don't forget to provide a start- and stoptime for the simulation. Once that's done, the simulation can be run by invoking the Run() method.
 
 ```
 ISimEnv simenv = new SimEnv()
@@ -20,7 +23,7 @@ ISimEnv simenv = new SimEnv()
 };
 simenv.Run();
 ```
-MODCOM keeps track of time with a double-precision variable, but makes no assumption about the unit of time. A unit could be a second, a day, a nano-second, or a millenium - it is entirely up to the user!
+MODCOM keeps track of time with a double-precision variable. The framework makes no assumption about the unit of time. It is up to the user to decide whether one unit is a second, a day, a nano-second, or a millenium - or any other measure of time!
 
 MODCOM provides a convenience class that can transform to and from calendar date/time.
 
@@ -30,7 +33,7 @@ StopTime = CalendarTime.ToDouble(new DateTime(2024, 3, 25))
 ```
 
 
-## SimObj <a name="SimObj"></a>
+## Working with a simulation object <a name="SimObj"></a>
 
 [Back to top](#Tutorial) | [View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)
 
