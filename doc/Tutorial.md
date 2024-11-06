@@ -1,8 +1,8 @@
 # MODCOM Tutorial <a name="Tutorial"></a>
 
 
-1. [Working with simulation environment (SimEnv) class](#SimEnv)
-2. [SimObj](#SimObj)
+1. [Working with the simulation environment  ](#SimEnv)
+2. [Working with a simulation object ](#SimObj)
 3. [UpdateableSimObj](#UpdateableSimObj)
 
 ## SimEnv <a name="SimEnv"></a>
@@ -10,7 +10,7 @@
 [Back to top](#Tutorial) |
 [View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
 
-A MODCOM simulation is always coordinated by a class that implements ISimEnv, for example the SimEnv class that is part of the framework. At a minimum, you must provide the start- and stoptime of the simulation. Then the simulation can be run by invoking the Run() method:
+The first step in creating a MODCOM simulation is setting up the simulation environment. The simulation environment is a class that keeps track of the component models in a simulation and coordinates their interactions. The behaviour of the simulation environment is defined by the ISimEnv interface. The MODCOM framework provides SimEnv, a class that implements ISimEnv. Using SimEnv to create a simulation is as simple as providing start- and stoptime of the simulation. Then the simulation can be run by invoking the Run() method.
 
 ```
 ISimEnv simenv = new SimEnv()
