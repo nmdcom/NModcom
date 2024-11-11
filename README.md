@@ -1,16 +1,15 @@
 # NMODCOM
-NMODCOM is a framework for discrete-event and continuous simulation as described
-in the following paper:
 
-Charles Hillyer, John Bolte, Frits van Evert, and Arjan Lamaker (2003). 
+NMODCOM is a framework for discrete-event and continuous simulation. 
 
-The ModCom modular simulation system. 
+* [Introduction](#Intro) 
+* [Reference article](#Paper) 
+* [Tutorial](doc/Tutorial.md) 
+* [Documentation](doc/NModcom.md) 
 
-European Journal of Agronomy, vol. 18, pages 333-343. 
+## Introduction <a name="Intro"></a>
 
-https://doi.org/10.1016/S1161-0301(02)00111-9.
-
-Abstract: Simulation models of agro-ecological systems are typically written 
+Simulation models of agro-ecological systems are typically written 
 in a manner that precludes reusability of parts of the model without a 
 significant amount of familiarity with and rewriting of existing code. Similarly, 
 replacing a part of a model with a functionally equivalent part from another model 
@@ -30,12 +29,14 @@ a house. ModCom thus allows modelers to create models and modeling tools that ar
 easily exchanged (in binary form or source code) with colleagues across the hall 
 or across the globe.
 
-NMODCOM is a C# implementation based on the C++ code from Hillyer et al. (2003). The 
-first version of NMODCOM was written in 2004 by Arjan Lamaker and Frits van Evert.
+## Reference article <a name="Paper"></a>
 
-Further information:
+The MODCOM  framework  is described in [this paper](https://doi.org/10.1016/S1161-0301(02)00111-9):
 
-* [Tutorial](doc/Tutorial.md) 
+```
+Charles Hillyer, John Bolte, Frits van Evert, and Arjan Lamaker (2003). The ModCom modular simulation system. European Journal of Agronomy, vol. 18, pages 333-343. doi:10.1016/S1161-0301(02)00111-9
+```
 
-* [Documentation](doc/NModcom.md) 
+The first version of NMODCOM was written in 2004 by Arjan Lamaker and Frits van Evert.
+
 
