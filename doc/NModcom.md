@@ -1,9 +1,9 @@
 # A brief introduction to modeling and simulation
-A system is defined as a group of components, that interact, to perform a particular function. A dynamic system is a system which evolves over time. A system may be  physical (an engine, a farm, an ecosystem) or abstract (a game, a computer program). The formalized representation of our understanding of a system is called a model. Evolving a dynamic model over time is called simulation. For more details, see [Zeigler (2000)](references.md#Zeigler2000)
+A system is defined as a group of components, that interact, to perform a particular function. A dynamic system is a system which evolves over time. A system may be  physical (an engine, a farm, an ecosystem) or abstract (a game, a computer program). The formalized representation of our understanding of a system is called a model. Evolving a dynamic model over time is called simulation. For more details, see [Zeigler et al. (2000)](references.md#Zeigler2000)
 
 # The MODCOM framework for simulation
 
-The MODCOM framework for simulation allows the linking of model implementations. MODCOM handles numerical integration, event handling, and communication between component models. MODCOM was first described by Hillyer et al. (2003). It has been used in the EU-funded project SEAMLESS (Van Evert & Lamaker, 2007). It has also provided inspiration for SIMPLACE (Enders et al., 2010; http://www.simplace.net) and BioMa (Donatelli et al., 2012). MODCOM can be considered to be an implementation of the Discrete Event Specification (DEVS) (Zeigler, 1976, Zeigler et al., 2000).
+The MODCOM framework for simulation allows the linking of model implementations. MODCOM handles numerical integration, event handling, and communication between component models. MODCOM was first described by Hillyer et al. (2003). It has been used in the EU-funded project SEAMLESS (Van Evert & Lamaker, 2007). It has also provided inspiration for SIMPLACE (Enders et al., 2010; http://www.simplace.net) and BioMa (Donatelli et al., 2012). MODCOM can be considered to be an implementation of the Discrete Event Specification (DEVS) ([Zeigler (1976)](references.md#Zeigler1976), [Zeigler et al. (2000)](references.md#Zeigler2000)).
 
 ## Classes in MODCOM
 
