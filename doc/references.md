@@ -8,6 +8,6 @@ HILLYER C, BOLTE J, VAN EVERT F & LAMAKER A (2003) The ModCom modular simulation
 
 VAN EVERT FK & LAMAKER EJJ (2007) The MODCOM framework for component-based simulation. In: Farming Systems Design 2007, International Symposium on Methodologies on Integrated Analysis on Farm Production Systems. (eds M Donatelli, J Hatfield & AE Rizzoli), 223-224. La Goliardica Pavese s.r.l., Catania.
 
-ZEIGLER BP (1976) Theory of modelling and simulation. John Wiley & Sons Inc.
+<a name="Zeigler1976"></a>ZEIGLER BP (1976) Theory of modelling and simulation. John Wiley & Sons Inc.
 
-ZEIGLER BP, PRAEHOFER H & KIM TG (2000) Theory of modeling and simulation., 2nd edn. Academic Press, San Diego.
+<a name="Zeigler2000"></a>ZEIGLER BP, PRAEHOFER H & KIM TG (2000) Theory of modeling and simulation., 2nd edn. Academic Press, San Diego.

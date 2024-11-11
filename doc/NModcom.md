@@ -1,5 +1,5 @@
 # A brief introduction to modeling and simulation
-TBD
+A system is defined as a group of components, that interact, to perform a particular function. A dynamic system is a system which evolves over time. A system may be  physical (an engine, a farm, an ecosystem) or abstract (a game, a computer program). The formalized representation of our understanding of a system is called a model. Evolving a dynamic model over time is called simulation. For more details, see [Zeigler (2000)](references.md#Zeigler2000)
 
 # The MODCOM framework for simulation
 
