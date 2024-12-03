@@ -408,6 +408,22 @@ namespace NModcom
         }
 
         /// <summary>
+        /// Resume the simulation and call EndRun() when the simulation is finished. 
+        /// StartRun() should be called before this method is called.
+        /// </summary>
+        public void ResumeToEnd()
+        {
+            try
+            {
+                Resume();
+            }
+            finally
+            {
+                EndRun();
+            }
+        }
+
+        /// <summary>
         /// Performs one simulation step.
         /// A simulation step consists of integrating to the next scheduled time event.
         /// and the handling of that event.
@@ -506,16 +522,9 @@ namespace NModcom
 
             SetStatus(SimulationStatus.Running);
 
-            try
-            {
-                while (!Step())
-                    ;
-            }
-            finally
-            {
+            while (!Step())
+                ;
 
-                EndRun();
-            }
         }
 
         /// <summary>

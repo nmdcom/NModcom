@@ -355,6 +355,12 @@ namespace NModcom
         void Resume();
 
         /// <summary>
+        /// Resume the simulation with Resume() and call EndRun() when the simulation is finished. 
+        /// Please note that StartRun() should be called before this method is called.
+        /// </summary>
+        void ResumeToEnd();
+
+        /// <summary>
         /// Register a time event. The event is scheduled by its event time and priority.
         /// </summary>
         /// <param name="simEvent">Event to register.</param>
