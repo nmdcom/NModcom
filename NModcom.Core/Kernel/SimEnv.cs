@@ -356,6 +356,9 @@ namespace NModcom
 
             // Enter the running state
             SetStatus(SimulationStatus.Running);
+
+            // output the state at the beginning of the simulation run
+            PerformOutput();
         }
 
         /// <summary>
@@ -394,7 +397,6 @@ namespace NModcom
         public void Run()
         {
             StartRun();
-            PerformOutput();
             try
             {
                 Resume();
@@ -504,8 +506,16 @@ namespace NModcom
 
             SetStatus(SimulationStatus.Running);
 
-            while (!Step())
-                ;
+            try
+            {
+                while (!Step())
+                    ;
+            }
+            finally
+            {
+
+                EndRun();
+            }
         }
 
         /// <summary>
