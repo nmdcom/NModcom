@@ -475,19 +475,28 @@ namespace NModcom
                 {
                     OnIntegrationStep();
                 }
-                PerformOutput();
+                if (timeEvent == null || currentTime < timeEvent.EventTime)
+                    PerformOutput();
             }
 
-            // Handle the topmost time event
-            timeEvent = TimeEvents.RemoveFirst();
+            // Handle all instances of TimeEvent with eventTime == currentTime, then do output
             if (timeEvent != null)
             {
-                OnSimEvent(timeEvent);
-                timeEvent.HandleEvent();
-                OnAfterSimEvent(timeEvent);
-                // Handling an event may cause state events, so handle them
-                HandleStateEvents();
-                OnAfterTimeEvent();
+                while (timeEvent != null && timeEvent.EventTime == currentTime)
+                {
+                    timeEvent = TimeEvents.RemoveFirst();
+                    if (timeEvent != null)
+                    {
+                        OnSimEvent(timeEvent);
+                        timeEvent.HandleEvent();
+                        OnAfterSimEvent(timeEvent);
+                        // Handling an event may cause state events, so handle them
+                        HandleStateEvents();
+                        OnAfterTimeEvent();
+                        timeEvent = TimeEvents.GetFirst();
+                    }
+                }
+                PerformOutput();
             }
 
             return stopRequested;

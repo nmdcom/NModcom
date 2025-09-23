@@ -34,7 +34,9 @@ or across the globe.
 The MODCOM  framework  is described in [this paper](https://doi.org/10.1016/S1161-0301(02)00111-9):
 
 ```
-Charles Hillyer, John Bolte, Frits van Evert, and Arjan Lamaker (2003). The ModCom modular simulation system. European Journal of Agronomy, vol. 18, pages 333-343. doi:10.1016/S1161-0301(02)00111-9
+Charles Hillyer, John Bolte, Frits van Evert, and Arjan Lamaker (2003). 
+The ModCom modular simulation system. European Journal of Agronomy 18:333-343. 
+doi:10.1016/S1161-0301(02)00111-9
 ```
 
 The first version of NMODCOM was written in 2004 by Arjan Lamaker and Frits van Evert.
