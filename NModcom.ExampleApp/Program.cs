@@ -30,11 +30,27 @@ namespace NModcom.ExampleApp
     {
         static void Main()
         {
+            // demonstrate SimEnv
             SimEnvOnly.RunSimulation();
-            SimEnvOnly.RunSimulationCalendar();
-            SimObjHowToUse.RunSimulation();
+
+            // demonstrate discrete-event model
             DiscreteEvent.RunSimulation();
+
+            // demonstrate ordinary differential equation model
+            SimExpGrowth.RunSimulation();
+
+
+
+
+
+            // demonstrate the use of CalendarTime
+            SimEnvOnly.RunSimulationCalendar();
+
+            SimObjHowToUse.RunSimulation();
+            
+            
             //BouncingBall.RunSimulation();
+            
             CropAndWeather.RunSimulation();
         }
     }

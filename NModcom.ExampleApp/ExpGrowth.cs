@@ -29,13 +29,10 @@ namespace NModcom.ExampleApp
     public class ExpGrowth : SimObj, IOdeProvider
     {
         [Input("rgr")]
-        double rgr;
-
-        [Input("T")]
-        double temperature;
+        IData rgr;
 
         [Output("S")]
-        double S;
+        IData S = new ConstFloatSimData(0);
 
         public int GetCount()
         {
@@ -44,30 +41,22 @@ namespace NModcom.ExampleApp
 
         public void GetDerivatives(double[] deriv, int index)
         {
-            double f;
-            double t = temperature;
-            if (t <= 5) 
-                f = 0;
-            else if (t >= 20)
-                f = 1;
-            else
-                f = (t - 5)/15;
-            deriv[index] = S * rgr * f;
+            deriv[index] = S.AsFloat * rgr.AsFloat;
         }
 
         public void GetState(double[] state, int index)
         {
-            state[index] = S;
+            state[index] = S.AsFloat;
         }
 
         public void SetState(double[] state, int index)
         {
-            S = state[index];
+            S.AsFloat = state[index];
         }
 
         public override void StartRun()
         {
-            S = 1;
+            S.AsFloat = 1;
         }
     }
 

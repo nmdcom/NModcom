@@ -5,24 +5,157 @@ A system is defined as a group of components, that interact, to perform a partic
 
 The MODCOM framework for simulation allows the linking of model implementations. MODCOM handles numerical integration, event handling, and communication between component models. MODCOM was first described by Hillyer et al. (2003). It has been used in the EU-funded project SEAMLESS (Van Evert & Lamaker, 2007). It has also provided inspiration for SIMPLACE (Enders et al., 2010; http://www.simplace.net) and BioMa (Donatelli et al., 2012). MODCOM can be considered to be an implementation of the Discrete Event Specification (DEVS) ([Zeigler (1976)](references.md#Zeigler1976), [Zeigler et al. (2000)](references.md#Zeigler2000)).
 
-## Classes in MODCOM
 
-The concept of MODCOM can be readily understood by considering the UML class diagram in the figure below, which shows the most important classes in the framework. Each class is briefly explained below. 
+The concept of MODCOM can be readily understood by considering the UML class diagram in the figure below, which shows the most important classes in the framework. The framework provides a default implementation for each interface. 
+
 
 ![Framework classes](images/modcom-class-diagram.svg "Class diagram of MODCOM")
 
 
 
-### ISimEnv
-The interface that defines a simulation environment. One, two, or more component models may be grouped in an ISimEnv (simulation environment). ISimEnv keeps track of time (start time and stop time for the simulation, as well as current simulation time). ISimEnv also provides methods to proceed with a simulation one step at a time (Step()) or run the simulation from beginning to end (Run()). ISimEnv has a method Add() which can be used to register model implementations that form part of the simulation. ISimEnv also maintains a list of ISimEvent instances (see below). Finally, ISimEnv has an instance of IIntegrator which provides numerical integration (in the diagram, EulerIntegrator class is shown as an implementation of IIntegrator).
+## ISimEnv and SimEnv
+ISimEnv is the interface that provides the starting point for a simulation. The SimEnv class provides an implementation of ISimEnv.
 
 
-### ISimObj
-The interface that defines a component model. Component models have inputs (for parameters and external influences) and outputs (to learn about the state of the model). 
+
+<div style="background-color:lightgreen">
+
+### Working with the simulation environment <a name="SimEnv"></a>
+
+[Back to top](#Tutorial) |
+[View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/SimEnvOnly.cs).
+
+
+The first step in creating a MODCOM simulation is setting up the simulation environment. The MODCOM framework provides SimEnv for this, a class that implements ISimEnv. This means that you can set up a simulation by creating an instance of SimEnv. Don't forget to provide a start- and stoptime for the simulation. Once that's done, the simulation can be run by invoking the Run() method.
+
+</div>
+
+```C#
+ISimEnv simenv = new SimEnv()
+{
+    StartTime = 0,
+    StopTime = 5
+};
+simenv.Run();
+```
+
+## ISimObj and SimObj
+
+A meaningful simulation needs one or more component models. ISimObj is the interface that defines a component model. SimObj is a class that provides a default implementation of ISimObj. 
 
 ISimObj instances may receive ISimEvent instances via a call to HandleEvent(). An ISimObj is expected to implement model-specific behaviour when it receives an ISimEvent. ISimObj implementations can register new instances of ISimEvent with the ISimEnv where they are registered. The ISimEvent mechanism is therefore suffficient to implement both discrete-event and discrete-time simulations. See also "Time events and the event list" (below).
 
-ISimObj instances that implement a model that is specified using differential equations request numerical integration services by implementing the IOdeProvider interface.
+
+
+### Working with a (discrete event) simulation object <a name="SimObj"></a>
+
+[Back to top](#Tutorial) | [View code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/MyFirstSimObj.cs)
+
+> *Working with a (discrete event) simulation object*
+> 
+>A simulation without any model code is of no use. We want to add at least one model to the simulation. This can be done by writing a class that implements the ISimObj interface, for example by inheriting from the utility class SimObj. This is shown in the code below.
+> 
+> another paragraph
+>
+>
+> ```
+>    internal class MyFirstSimObj : SimObj
+>    {
+>        [Output("my output")]
+>        IData myOutput;
+>
+>        public override void StartRun()
+>        {
+>            myOutput = new ConstFloatSimData(3.14);
+>        }
+>
+>        public override void HandleEvent(ISimEvent simEvent)
+>        {
+>            myOutput.AsFloat += 1.0;
+>        }
+>
+>    }
+>
+>```
+
+Several points need explaining.
+First, the MyFirstSimObj model makes information about its state visible in two steps: by creating a field that implements the IData interface, and by declaring that this field is an output field:
+
+ ```
+        [Output("my output")]
+        IData myOutput = new ConstFloatSimData(0);
+```
+
+Second, the MyFirstSimObj model overrides the StartRun() method declared by the ISimObj interface. StartRun() is called by the SimEnv before each simulation run. This is the right method to assign an initial value to the model's state. Here we create an instance of ConstFloatSimData which can hold a single floating point value.
+
+```
+public override void StartRun()
+{
+        myOutput.AsFloat = 3.14;
+}
+```
+
+Third, we need to provide a mechanism for the model to change its state. A MODCOM simulation is entirely driven by events. We can make MyFirstSimObj respond to events by implementing HandleEvent() which is declared by ISimObj. 
+
+In the code below, the state (output) of the model is incremented by 1 whenever an event is received. 
+
+*Later we will see how events can be sent at specific times, to specific SimObj's, and how SimObj's can inspect events to determine how to respond*.
+
+```
+public override void HandleEvent(ISimEvent simEvent)
+{
+        myOutput.AsFloat += 1.0;
+}
+```
+Now that we have a model, we can use it in a simulation, simply by using the Add() method of ISimEnv.
+
+```
+   ISimEnv simenv = new SimEnv()
+   {
+       StartTime = 0,
+       StopTime = 5
+   };
+
+   ISimObj mySimObj = new MyFirstSimObj()
+   {
+       Name = "Test"
+   };
+
+   simenv.Add(mySimObj);
+```
+
+The SimEnv maintains a list of SimObj's that have been added to it. We can refer to items in this either by index or by name. The same is true for the list of outputs maintained by a SimObj. That means that the two lines of code below will produce the same output.
+
+```
+    Console.WriteLine(simenv[0].Outputs[0].Data.AsFloat);
+    Console.WriteLine(simenv["Test"].Outputs["my output"].Data.AsFloat);
+```
+
+Only one more thing to do. We need to register one or more events so that our model knows when to update its state.
+
+
+```
+   simenv.RegisterEvent(new TimeEvent(simenv, mySimObj, 0, 0, 1.5 ));
+   simenv.RegisterEvent(new TimeEvent(simenv, mySimObj, 0, 0, 3.0 ));
+```
+
+When we run this simulation, it produces the following output:
+
+```
+[TODO insert output here]
+```
+
+### Working with a differential equation simulation object <a name="SimObjODE"></a>
+
+
+
+
+
+
+[Back to top](#Tutorial) |
+[Code for this section](https://github.com/nmdcom/NModcom/blob/main/NModcom.ExampleApp/DiscreteEvents.cs)
+
+
 
 ### IData
 The interface that defines a data element to be exchanged between ISimObj instances. The outputs of an ISimObj hold an IData instance. The inputs of an ISimObj can hold a pointer to an IData instance. In this way, the output of one ISimObj can be used as in input for one or more other ISimObj instances.
@@ -45,9 +178,7 @@ Component models can exchange data in the form of objects that implement the IDa
 In this Figure, expGrowth and env are instances of component models (ISimObj implementations). The env model instance specifies an output with name “T” and makes the data corresponding to that output available via an object called “T”. This object implements the IData interface and is shown in the Figure as holding the value “18.5”. The expGrowth model instance specifies an input, which incidentally has also name “T”. The input object “T” is capable of receiving a pointer to an IData object. 
 
 ## Time events and the event list
-A MODCOM simulation is driven by time events. Time events are scheduled to occur at a certain time; at that time, the simulation object that is the target of the event is notified. Simulation objects respond to events in a way that makes sense to them. For example, integrator objects (objects that implement IIntegrator) perform an integration step. 
-
-Events are implemented as classes and thus can encapsulate arbitrary amounts of information. This makes it possible that a crop object responds to “Harvest” events, for example by reducing its biomass; and that a soil object responds to “Tillage” events.
+A MODCOM simulation is driven by time events. Time events are scheduled to occur at a certain time; at that time, the simulation object that is the target of the event is notified. Simulation objects respond by updating their state, and can take into account the kind of event as well as the current time. 
 
 The event list is not fixed: during a simulation new events can be added, while scheduled events can be removed. Thus, an integration object may schedule additional integration events if the time step of numerical integration must be changed; and a farm management object may schedule irrigation events as they become necessary. 
 
@@ -59,6 +190,8 @@ The following C# code snippet shows how to create a time event and add it to the
 TimeEvent e = new TimeEvent(this, target, time);
 simenv.RegisterEvent(e);
 ```
+
+Events are implemented as classes and thus can encapsulate arbitrary amounts of information. This makes it possible that a crop object responds to “Harvest” events, for example by reducing its biomass; and that a soil object responds to “Tillage” events.
 
 ## State events
 MODCOM can work with state events. Imagine that the temperature in a greenhouse is rising slowly. When the temperature reaches a certain threshold, windows are opened to slow down or prevent a further rise in temperature. 
