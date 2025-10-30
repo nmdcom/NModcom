@@ -30,6 +30,7 @@ namespace NModcom.ExampleApp
     {
         static void Main()
         {
+            BouncingBallSim.RunSimulation();
             // demonstrate SimEnv
             SimEnvOnly.RunSimulation();
 
@@ -49,7 +50,6 @@ namespace NModcom.ExampleApp
             SimObjHowToUse.RunSimulation();
             
             
-            //BouncingBall.RunSimulation();
             
             CropAndWeather.RunSimulation();
         }

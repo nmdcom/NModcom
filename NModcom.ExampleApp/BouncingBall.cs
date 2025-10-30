@@ -25,20 +25,84 @@
 */
 
 
+using System.Xml.Linq;
+
 namespace NModcom.ExampleApp
 {
     /// <summary>
-    /// implement the bouncing ball example from the book by Wainer et al. on multi-paradigm modeling
+    /// Simple model of a bouncing ball 
+    /// From: Fritzson, P. (2020). Modelica: Equation-Based, Object-Oriented Modelling of Physical Systems. 
+    /// In: Carreira, P., Amaral, V., Vangheluwe, H. (eds) Foundations of Multi-Paradigm Modelling for 
+    /// Cyber-Physical Systems. Springer, Cham. doi: 10.1007/978-3-030-43946-0_3
+    /// 
     /// Euler with several time steps
     /// RK
     /// state event (for bouncing)
     /// time event (for explosion?)
     /// </summary>
-    internal class BouncingBall
+    public class BouncingBall : SimObj, IOdeProvider
     {
-        internal static void RunSimulation()
+        const double g = 9.81; // gravity constant
+        private double c = 0.9; // coefficient of restitution
+        private double radius = 0.1;
+        private double height; // height of the ball center
+        private double velocity; // velocity of the ball
+
+        [Output("height")]
+        IData Height = new ConstFloatSimData(0);
+
+        [Output("velocity")]
+        IData Velocity = new ConstFloatSimData(0);
+
+        private void SetVelocity(double value)
         {
-            throw new NotImplementedException();
+            velocity = value;
+            Velocity.AsFloat = value;
         }
+
+        public override void StartRun()
+        {
+            SetVelocity (0);
+            height = 1.0;
+
+            SimEnv.RegisterEvent(new HitGround(this, this, 0, 0));
+        }
+
+        public override void HandleEvent(ISimEvent simEvent)
+        {
+            if (simEvent is HitGround)
+            {
+                SetVelocity( -c * velocity);
+                SimEnv.RegisterEvent(new HitGround(this, this, 0, 0));
+            }
+        }
+        public int GetCount()
+        {
+            return 2;
+        }
+
+        public void GetDerivatives(double[] deriv, int index)
+        {
+            deriv[index = 0] = velocity;
+            deriv[index + 1] = -g;
+        }
+
+        public void GetState(double[] state, int index)
+        {
+            state[0] = height;
+            state[1] = velocity;
+        }
+
+        public void SetState(double[] state, int index)
+        {
+            height = state[0];
+            velocity = state[1];
+
+            // make available as output
+            Velocity.AsFloat = velocity;
+            Height.AsFloat = height;
+
+        }
+
     }
 }
