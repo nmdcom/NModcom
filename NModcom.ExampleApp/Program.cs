@@ -30,7 +30,6 @@ namespace NModcom.ExampleApp
     {
         static void Main()
         {
-            BouncingBallSim.RunSimulation();
             // demonstrate SimEnv
             SimEnvOnly.RunSimulation();
 
@@ -38,18 +37,14 @@ namespace NModcom.ExampleApp
             DiscreteEvent.RunSimulation();
 
             // demonstrate ordinary differential equation model
+            BouncingBallSim.RunSimulation("Euler");
+            BouncingBallSim.RunSimulation("RK");
             SimExpGrowth.RunSimulation();
-
-
-
-
 
             // demonstrate the use of CalendarTime
             SimEnvOnly.RunSimulationCalendar();
 
             SimObjHowToUse.RunSimulation();
-            
-            
             
             CropAndWeather.RunSimulation();
         }

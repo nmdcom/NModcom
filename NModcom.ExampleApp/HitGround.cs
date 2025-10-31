@@ -14,7 +14,12 @@ namespace NModcom.ExampleApp
 
         public override bool CheckState(double time)
         {
-            return (Target.Outputs["height"].Data.AsFloat < 0.05) 
+            // Return "true" when the ball has hit the ground
+            // This is the case when the height of the ball is less than delta
+            // and when speed is negative (to prevent the event from firing when the ball right after a bounce,
+            // when the ball is still close to the ground but moving up)
+            const double delta = 0.05;
+            return (Target.Outputs["height"].Data.AsFloat < delta) 
                 && (Target.Outputs["velocity"].Data.AsFloat < 0.0);
         }
     }

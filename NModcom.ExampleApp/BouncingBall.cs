@@ -44,7 +44,7 @@ namespace NModcom.ExampleApp
     {
         const double g = 9.81; // gravity constant
         private double c = 0.9; // coefficient of restitution
-        private double radius = 0.1;
+        private double radius = 0.1; // TODO take this into account in determining the moment of bouncing
         private double height; // height of the ball center
         private double velocity; // velocity of the ball
 
@@ -54,16 +54,11 @@ namespace NModcom.ExampleApp
         [Output("velocity")]
         IData Velocity = new ConstFloatSimData(0);
 
-        private void SetVelocity(double value)
-        {
-            velocity = value;
-            Velocity.AsFloat = value;
-        }
-
         public override void StartRun()
         {
-            SetVelocity (0);
+            velocity = 0;
             height = 1.0;
+            SetOutput();
 
             SimEnv.RegisterEvent(new HitGround(this, this, 0, 0));
         }
@@ -72,7 +67,8 @@ namespace NModcom.ExampleApp
         {
             if (simEvent is HitGround)
             {
-                SetVelocity( -c * velocity);
+                velocity = -c * velocity;
+                SetOutput();
                 SimEnv.RegisterEvent(new HitGround(this, this, 0, 0));
             }
         }
@@ -83,8 +79,8 @@ namespace NModcom.ExampleApp
 
         public void GetDerivatives(double[] deriv, int index)
         {
-            deriv[index = 0] = velocity;
-            deriv[index + 1] = -g;
+            deriv[index = 0] = velocity; // rate of change of height
+            deriv[index + 1] = -g;       // rate of change of velocity
         }
 
         public void GetState(double[] state, int index)
@@ -97,11 +93,13 @@ namespace NModcom.ExampleApp
         {
             height = state[0];
             velocity = state[1];
+            SetOutput();
+        }
 
-            // make available as output
+        private void SetOutput()
+        {
             Velocity.AsFloat = velocity;
             Height.AsFloat = height;
-
         }
 
     }
