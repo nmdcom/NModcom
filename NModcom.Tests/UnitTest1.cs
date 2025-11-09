@@ -42,18 +42,6 @@ namespace NModcom.Tests
         {
         }
 
-        [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void Test2()
-        {
-            Assert.Fail();
-        }
-
         /// <summary>
         /// This test creates a simulation, serializes it to a JSON file, deserializes from the same file, serializes 
         /// to a second file, and compares the two files. The test is failed when the two files have dissimilar content.
@@ -77,7 +65,7 @@ namespace NModcom.Tests
             string sim2 = SimEnvWriter.WriteJson(simenv2);
             SimEnvWriter.WriteJson(simenv2, "pp2.json");
 
-            Assert.AreEqual(sim, sim2);
+            Assert.That(sim, Is.EqualTo(sim2));
         }
 
         /// <summary>
@@ -102,7 +90,7 @@ namespace NModcom.Tests
             // write the new simulation to file
             string yaml2 = SimEnvWriter.WriteYaml(simenv2);
 
-            Assert.AreEqual(yaml, yaml2);
+            Assert.That(yaml, Is.EqualTo(yaml2));
         }
 
         private ISimEnv CreateSimEnv()
