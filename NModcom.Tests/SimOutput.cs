@@ -26,7 +26,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using NModcom.Util;
 using NModcom.Examples;
@@ -79,14 +78,14 @@ namespace NModcom.Tests
             simenv.Run();
 
             // check the output times
-            Assert.AreEqual(startTime,            t[0], delta);
-            Assert.AreEqual(startTime + step * 1, t[1], delta);
-            Assert.AreEqual(startTime + step * 2, t[2], delta);
+            Assert.That(t[0], Is.EqualTo(startTime).Within(delta));
+            Assert.That(t[1], Is.EqualTo(startTime + step * 1).Within(delta));
+            Assert.That(t[2], Is.EqualTo(startTime + step * 2).Within(delta));
 
             // check the output values
-            Assert.AreEqual(expected_output[0], d[0], delta); // initial value
-            Assert.AreEqual(expected_output[1], d[1], delta);
-            Assert.AreEqual(expected_output[2], d[2], delta);
+            Assert.That(d[0], Is.EqualTo(expected_output[0]).Within(delta)); // initial value
+            Assert.That(d[1], Is.EqualTo(expected_output[1]).Within(delta));
+            Assert.That(d[2], Is.EqualTo(expected_output[2]).Within(delta));
         }
 
         private void Simenv_OutputEvent(object sender, EventArgs e)
@@ -145,10 +144,12 @@ namespace NModcom.Tests
                 string[] cols = line.Split(sep);
 
                 // check the output times
-                Assert.AreEqual(startTime + i, Convert.ToDouble(cols[1]), delta);
+                double timeVal = Convert.ToDouble(cols[1]);
+                Assert.That(timeVal, Is.EqualTo(startTime + i).Within(delta));
 
                 //// check the output values
-                Assert.AreEqual(expected_output[i], Convert.ToDouble(cols[2]), delta); 
+                double dataVal = Convert.ToDouble(cols[2]);
+                Assert.That(dataVal, Is.EqualTo(expected_output[i]).Within(delta));
             }
             sr.Close();
 
