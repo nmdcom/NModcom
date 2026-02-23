@@ -357,8 +357,6 @@ namespace NModcom
             // Enter the running state
             SetStatus(SimulationStatus.Running);
 
-            // output the state at the beginning of the simulation run
-            PerformOutput();
         }
 
         /// <summary>
