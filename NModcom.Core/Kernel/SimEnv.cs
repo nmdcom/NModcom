@@ -335,6 +335,10 @@ namespace NModcom
             currentTime = startTime;
             stopRequested = false;
 
+            if (timeEvents.GetFirst().EventTime < currentTime) {
+                throw new Exception("SimEnv.StartRun: Your first event is before the startTime");
+            }
+
             if (integrator != null)
                 integrator.StartRun();
 
