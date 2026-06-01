@@ -335,8 +335,13 @@ namespace NModcom
             currentTime = startTime;
             stopRequested = false;
 
-            if (timeEvents.GetFirst().EventTime < currentTime) {
-                throw new Exception("SimEnv.StartRun: Your first event is before the startTime");
+            //If timeEvents have been registered  then first willl not be null; else skip this check
+            if (timeEvents.GetFirst() != null) {
+                //if a time event has been registered that occurs before the simulation startTime then throw an error
+                if (timeEvents.GetFirst().EventTime < currentTime)
+                {
+                    throw new Exception("SimEnv.StartRun: Your first timeEvent is before the startTime");
+                }
             }
 
             if (integrator != null)
