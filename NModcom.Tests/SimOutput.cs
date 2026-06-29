@@ -41,7 +41,7 @@ namespace NModcom.Tests
 
         const double delta = 1E-9;
 
-        double[] expected_output = new double[] { 1.00, 1.10, 1.21 };
+        double[] expected_output = new double[] { 1.10, 1.21 };
 
         [SetUp]
         public void Setup()
@@ -49,11 +49,12 @@ namespace NModcom.Tests
         }
 
         /// <summary>
-        /// The output function should be triggered at the start of the simulation and at 
+        /// The output function should not be triggered at the start of the simulation and 
+        /// it should be triggered 
         /// after each integration step. We check this with a simple exponential growth model
         /// for which we can easily calculate model state for the first few time steps.
         /// </summary>
-        [Test, Ignore("output at t=0 broken by db1199e — needs fix in SimEnv.StartRun")]
+        [Test]
         public void Test1()
         {
             const double startTime = 0.0;
@@ -78,14 +79,12 @@ namespace NModcom.Tests
             simenv.Run();
 
             // check the output times
-            Assert.That(t[0], Is.EqualTo(startTime).Within(delta));
-            Assert.That(t[1], Is.EqualTo(startTime + step * 1).Within(delta));
-            Assert.That(t[2], Is.EqualTo(startTime + step * 2).Within(delta));
+            Assert.That(t[0], Is.EqualTo(startTime + step * 1).Within(delta));
+            Assert.That(t[1], Is.EqualTo(startTime + step * 2).Within(delta));
 
             // check the output values
-            Assert.That(d[0], Is.EqualTo(expected_output[0]).Within(delta)); // initial value
+            Assert.That(d[0], Is.EqualTo(expected_output[0]).Within(delta));
             Assert.That(d[1], Is.EqualTo(expected_output[1]).Within(delta));
-            Assert.That(d[2], Is.EqualTo(expected_output[2]).Within(delta));
         }
 
         private void Simenv_OutputEvent(object sender, EventArgs e)
@@ -98,7 +97,7 @@ namespace NModcom.Tests
             Console.WriteLine("time={0}  density={1}", _t, _d);
         }
 
-        [Test, Ignore("output at t=0 broken by db1199e — needs fix in SimEnv.StartRun")]
+        [Test]
         public void Test2()
         {
             const double startTime = 0.0;
@@ -138,14 +137,14 @@ namespace NModcom.Tests
             // now read output lines and check
             char sep = ',';
             string line;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 line = sr.ReadLine();
                 string[] cols = line.Split(sep);
 
                 // check the output times
                 double timeVal = Convert.ToDouble(cols[1]);
-                Assert.That(timeVal, Is.EqualTo(startTime + i).Within(delta));
+                Assert.That(timeVal, Is.EqualTo(startTime + i + 1).Within(delta));
 
                 //// check the output values
                 double dataVal = Convert.ToDouble(cols[2]);
