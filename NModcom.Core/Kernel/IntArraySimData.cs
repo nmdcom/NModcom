@@ -84,10 +84,15 @@ namespace NModcom
         // always uses decimal points.
         public IntArraySimData(string value) : base(null)
         {
-            string[] x = value.Split(',');
-            this.value = new int[x.Length];
-            for (int i = 0; i < x.Length; i++)
-                this.value[i] = Convert.ToInt32(x[i]);
+            if (value == null || value.Length == 0)
+                this.value = new int[] { };
+            else
+            {
+                string[] x = value.Split(',');
+                this.value = new int[x.Length];
+                for (int i = 0; i < x.Length; i++)
+                    this.value[i] = Convert.ToInt32(x[i]);
+            }
         }
 
         /// <summary>
@@ -107,7 +112,18 @@ namespace NModcom
         public override string AsString
         {
             get { return ToString(); }
-            set { throw new Exception("Not implemented"); }
+            set 
+            {
+                if (value == null || value.Length == 0)
+                    this.value = new int[] { };
+                else
+                {
+                    string[] x = value.Split(',');
+                    this.value = new int[x.Length];
+                    for (int i = 0; i < x.Length; i++)
+                        this.value[i] = Convert.ToInt32(x[i]);
+                }
+            }
         }
 
         /// <summary>
@@ -118,11 +134,14 @@ namespace NModcom
         public override string ToString()
         {
             string s = "";
-            for (int i = 0; i < value.Length; i++)
+            if (value != null)
             {
-                if (i != 0)
-                    s = s + ",";
-                s = s + value[i].ToString();
+                for (int i = 0; i < value.Length; i++)
+                {
+                    if (i != 0)
+                        s = s + ",";
+                    s = s + value[i].ToString();
+                }
             }
             return s;
         }

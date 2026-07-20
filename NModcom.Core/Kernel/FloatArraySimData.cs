@@ -63,10 +63,15 @@ namespace NModcom
         // always uses decimal points.
         public FloatArraySimData(string value) : base(null)
         {
-            string[] x = value.Split(',');
-            this.value = new double[x.Length];
-            for (int i = 0; i < x.Length; i++)
-                this.value[i] = Convert.ToDouble(x[i]);
+            if (value == null || value.Length == 0)
+                this.value = new double[] { };
+            else
+            {
+                string[] x = value.Split(',');
+                this.value = new double[x.Length];
+                for (int i = 0; i < x.Length; i++)
+                    this.value[i] = Convert.ToDouble(x[i]);
+            }
         }
 
         /// <summary>
@@ -84,7 +89,18 @@ namespace NModcom
         public override string AsString
         {
             get { return ToString(); }
-            set { throw new Exception("Not implemented"); }
+            set 
+            {
+                if (value == null || value.Length == 0)
+                    this.value = new double[] { };
+                else
+                {
+                    string[] x = value.Split(',');
+                    this.value = new double[x.Length];
+                    for (int i = 0; i < x.Length; i++)
+                        this.value[i] = Convert.ToDouble(x[i]);
+                }
+            }
         }
 
         /// <summary>
@@ -94,19 +110,17 @@ namespace NModcom
         /// <returns>A string representation of the values stored.</returns>
         public override string ToString()
         {
-            if (value == null)
-                return "";
-            else
+            string s = "";
+            if (value != null)
             {
-                string s = "\"";
                 for (int i = 0; i < value.Length; i++)
                 {
                     if (i != 0)
                         s = s + ",";
                     s = s + value[i].ToString();
                 }
-                return s + "\"";
             }
+            return s;
         }
 
         public override Type DataType => typeof(double[]);
@@ -132,7 +146,7 @@ namespace NModcom
         public override double[] AsFloatArray
         {
             get { return value; }
-            set { throw new Exception("Not implemented");}
+            set { throw new Exception("Not implemented"); }
         }
 
         /// <summary>
