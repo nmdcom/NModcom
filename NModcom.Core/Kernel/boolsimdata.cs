@@ -95,7 +95,10 @@ namespace NModcom
         public override string AsString
         {
             get { return ToString(); }
-            set { throw new Exception("Cannot do this conversion"); }
+            set 
+            {
+                this.value = (value != null && value.Equals("true", StringComparison.InvariantCultureIgnoreCase));
+            }
         }
 
         /// <summary>
