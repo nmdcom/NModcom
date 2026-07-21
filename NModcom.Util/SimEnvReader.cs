@@ -82,7 +82,7 @@ namespace NModcom.Util
                     throw new Exception("failed to create instance of simobj");
 
                 simobj.Name = jsimobj.Name;
-                
+
                 // add new object to SimEnv
                 simEnv.Add(simobj, true);
             }
@@ -246,7 +246,7 @@ namespace NModcom.Util
                         data = new ConstIntSimData(null, jinput.Value);
                     else if (datatype.Equals("IDATA"))
                     {
-                        if (   jinput.Assembly != null
+                        if (jinput.Assembly != null
                             && jinput.Assembly.Length > 0
                             && jinput.Class != null
                             && jinput.Class.Length > 0
@@ -255,6 +255,8 @@ namespace NModcom.Util
                             Assembly assembly = RunInfo.Info().LoadAssembly(jinput.Assembly);
                             Type t = assembly.GetType(jinput.Class);
                             ConstructorInfo c = t.GetConstructor(new Type[] { typeof(string) });
+                            if (c == null)
+                                throw new Exception($"Constructor not found: {jinput.Assembly}.{t.Name}(string) ");
                             object o = c.Invoke(new object[] { jinput.Value });
                             data = o as IData;
                         }
