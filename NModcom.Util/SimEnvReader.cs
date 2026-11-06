@@ -24,11 +24,13 @@
  * ================================================================================
 */
 
-using System;
-using System.Reflection;
-using System.IO;
-using System.Xml;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Office2010.CustomUI;
 using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Xml;
 using YamlDotNet.Serialization;
 
 
@@ -104,6 +106,32 @@ namespace NModcom.Util
             return simobj;
         }
 
+        private ITimeEvent LoadTimeEvent(
+            string assemblyFile
+            , string classname
+            , ISimObj source
+            , ISimObj target
+            , int priority
+            , int message
+            , double time
+            )
+        {
+            //Console.WriteLine("loading class \"" + classname + "\" from \"" + assemblyFile + "\"");
+
+            Assembly assembly = RunInfo.Info().LoadAssembly(assemblyFile);
+
+            // instantiate the class
+            //ITimeEvent timeEvent = (assembly.CreateInstance(classname, true) as ITimeEvent);
+
+            object o = assembly.CreateInstance(classname, true, BindingFlags.Default, null, new object[] { source, target, message, priority, time }, null, null);
+            ITimeEvent timeEvent = (o as ITimeEvent);
+
+            if (timeEvent == null)
+                throw new Exception("Failed to load class " + classname);
+
+            return timeEvent;
+        }
+
         private void LinkSimObjs(ISimEnv simEnv, JSimEnv jsimenv)
         {
             foreach (JSimObjLink link in jsimenv.SimObjLink)
@@ -133,6 +161,26 @@ namespace NModcom.Util
                 inp.Data = d;
             }
         }
+
+        //private void LoadTimeEvents(ISimEnv simenv, JSimEnv jsimenv)
+        //{
+        //    foreach (JEvent jEvent in jsimenv.EventList)
+        //    {
+        //        ITimeEvent timeEvent = LoadTimeEvent(jEvent.Assembly, jEvent.Class
+        //            , simenv[jEvent.Source]
+        //            , simenv[jEvent.Target]
+        //            , jEvent.Message
+        //            , jEvent.Priority
+        //            , jEvent.EventTime
+        //            );
+        //        // mark up new instance
+        //        if (timeEvent == null)
+        //            throw new Exception("failed to create instance of simobj");
+
+        //        simenv.RegisterEvent(timeEvent);
+        //    }
+        //}
+
 
         private void LinkIntegrators(ISimEnv simEnv, JSimEnv jsimenv)
         {
@@ -196,6 +244,9 @@ namespace NModcom.Util
 
             // connect simobj's 
             LinkSimObjs(simenv, jsimenv);
+
+            // load time events
+            //LoadTimeEvents(simenv, jsimenv);
 
             //// all done - return a ISimEnv that's ready to be connected with data and run
             return simenv;
