@@ -105,6 +105,14 @@ namespace NModcom.Util
                     }
                 }
             }
+
+            //// list of registered events
+            //EventList = new List<JEvent>();
+            //foreach (TimeEvent ev in simenv.TimeEvents)
+            //{
+            //    JEvent jEvent = new JEvent(ev);
+            //    EventList.Add(jEvent);
+            //}
         }
     }
 }
