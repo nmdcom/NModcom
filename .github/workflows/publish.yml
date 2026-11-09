@@ -64,9 +64,6 @@ jobs:
           name: nuget
           path: ${{ env.NuGetDirectory }}
 
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v5
-
       # Exchange the GitHub OIDC token for a temporary NuGet API key
       - name: NuGet login (OIDC)
         id: login
