@@ -52,25 +52,31 @@ jobs:
         run: dotnet test --configuration Release
 
   deploy:
-    # Publish only when creating a GitHub Release
-    # https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository
     # if: github.event_name == 'release'
     runs-on: ubuntu-latest
     needs: [run_test, create_nuget]
+    permissions:
+      id-token: write   # required for the OIDC token; without it NuGet/login fails with 403
+      contents: read    # setting permissions overrides the defaults, so add this explicitly
     steps:
-      # Download the NuGet package created in the previous job
       - uses: actions/download-artifact@v4
         with:
           name: nuget
           path: ${{ env.NuGetDirectory }}
 
-      # Install the .NET SDK indicated in the global.json file
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
+
+      # Exchange the GitHub OIDC token for a temporary NuGet API key
+      - name: NuGet login (OIDC)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
 
       - name: Publish NuGet package
         run: |
           for file in ${{ env.NuGetDirectory }}/*.nupkg
           do
-            dotnet nuget push "$file" --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "$file" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           done
