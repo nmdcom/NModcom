@@ -26,7 +26,7 @@ jobs:
 
       # Install the .NET SDK indicated in the global.json file
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
 
       # Create the NuGet package in the folder from the environment variable NuGetDirectory
       - run: |
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
       - name: Run tests
         run: dotnet test --configuration Release
 
