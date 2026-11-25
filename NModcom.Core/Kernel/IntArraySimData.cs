@@ -25,6 +25,7 @@
 */
 
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -68,6 +69,10 @@ namespace NModcom
     public class IntArraySimData : SimData, IIntArray, IArray
     {
         private int[] value;
+
+        public IntArraySimData(): this(null, null)
+        {
+        }
 
         public IntArraySimData(ISimObj owner, int[] value) : base(owner)
         {
@@ -209,6 +214,12 @@ namespace NModcom
         {
             get { return this.value; }
             set { this.value = value; }
+        }
+
+        public override JToken AsJToken
+        {
+            get { return JToken.FromObject(value); }
+            set { this.value = value.ToObject<int[]>(); }
         }
         #region IArray Members
 

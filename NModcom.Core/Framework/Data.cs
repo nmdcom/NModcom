@@ -24,6 +24,8 @@
  * ================================================================================
 */
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace NModcom
@@ -81,5 +83,8 @@ namespace NModcom
         string AsString { get; set; }
 
         double[] AsFloatArray { get; set; }
+
+        JToken AsJToken { get; set; }
+
     }
 }

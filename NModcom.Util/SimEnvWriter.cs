@@ -26,7 +26,6 @@
 
 using System.IO;
 using Newtonsoft.Json;
-using YamlDotNet.Serialization;
 
 namespace NModcom.Util
 {
@@ -48,19 +47,6 @@ namespace NModcom.Util
             sw.WriteLine(json);
             sw.Close();
         }
-        public static string WriteYaml(ISimEnv simenv)
-        {
-            JSimEnv jsimenv = new JSimEnv(simenv);
-            var serializer = new SerializerBuilder().Build();
-            string yaml = serializer.Serialize(jsimenv);
-            return yaml;
-        }
-        public static void WriteYaml(ISimEnv simenv, string filename)
-        {
-            string yaml = WriteYaml(simenv);
-            StreamWriter sw = new StreamWriter(filename);
-            sw.WriteLine(yaml);
-            sw.Close();
-        }
+
     }
 }

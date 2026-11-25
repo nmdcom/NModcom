@@ -25,6 +25,9 @@
 */
 
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace NModcom
 {
@@ -55,6 +58,9 @@ namespace NModcom
         }
 
         public ConstIntSimData(ISimObj owner) : this(owner, 0)
+        {
+        }
+        public ConstIntSimData() : this(null, 0)
         {
         }
 
@@ -99,6 +105,12 @@ namespace NModcom
         {
             get { return value; }
             set { this.value = value; }
+        }
+
+        public override JToken AsJToken
+        {
+            get { return JToken.FromObject(value); }
+            set { this.value = value.ToObject<int>(); }
         }
 
     }

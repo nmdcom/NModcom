@@ -24,6 +24,8 @@
  * ================================================================================
 */
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace NModcom
@@ -87,6 +89,10 @@ namespace NModcom
         {
         }
 
+        public ConstBoolSimData() : this(null, false)
+        {
+        }
+
         public override Type DataType => typeof(bool);
 
         /// <summary>
@@ -137,6 +143,12 @@ namespace NModcom
             set { throw new Exception("NOT ALLOWED"); }
         }
 
+        public override JToken AsJToken
+        {
+            get { return JToken.FromObject(value); }
+            set { this.value = value.ToObject<bool>(); }
+        }
+
         /// <summary>
         /// Provides the value of this data object ("true" or "false").
         /// </summary>
@@ -145,5 +157,6 @@ namespace NModcom
             get { return value; }
             set { this.value = value; }
         }
+
     }
 }

@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom.Kernel
 {
@@ -147,6 +148,8 @@ namespace NModcom.Kernel
                 throw new Exception("This is a read-only data object.");
             }
         }
+
+        public JToken AsJToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
     }

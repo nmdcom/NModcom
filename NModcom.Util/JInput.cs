@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom.Util
 {
@@ -35,9 +36,12 @@ namespace NModcom.Util
         public string Class { get; set; }
         public string Assembly { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
+        public JToken Value { get; set; }
 
-        public JInput() { }
+        public JInput() 
+        { 
+        }
+        
         public JInput(IInput input, ISimObj simobj)
         {
             Name = input.Name;
@@ -47,7 +51,7 @@ namespace NModcom.Util
             {
                 Assembly = d.GetType().Assembly.GetName().Name; // FKVE not sure if this correct
                 Class = d.GetType().FullName;
-                Value = d.AsString;
+                Value = d.AsJToken;
                 DataType = "IDATA";
 
                 // Setting field value in case of param attributes
@@ -63,7 +67,8 @@ namespace NModcom.Util
                         {
                             if (((ParamAttribute)simAttr).Name == input.Name)
                             {
-                                Value = fieldInfo.GetValue(simobj).ToString();
+                                // FIXME
+                                // Value = fieldInfo.GetValue(simobj).AsJson;
                             }
                         }
                     }

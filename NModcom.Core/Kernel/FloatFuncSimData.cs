@@ -25,6 +25,7 @@
 */
 
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -63,5 +64,7 @@ namespace NModcom
             get { return Convert.ToInt32(ValueFunc()); }
             set { throw new Exception("NOT ALLOWED"); }
         }
+
+        public override JToken AsJToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

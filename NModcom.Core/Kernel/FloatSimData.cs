@@ -25,6 +25,9 @@
 */
 
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace NModcom
 {
@@ -60,6 +63,10 @@ namespace NModcom
         }
 
         public ConstFloatSimData(ISimObj owner) : this(owner, 0)
+        {
+        }
+
+        public ConstFloatSimData(): this(null, 0)
         {
         }
 
@@ -105,6 +112,12 @@ namespace NModcom
         {
             get { throw new Exception("NOT ALLOWED"); }
             set { throw new Exception("NOT ALLOWED"); }
+        }
+
+        public override JToken AsJToken
+        {
+            get { return JToken.FromObject(value); }
+            set { this.value = value.ToObject<double>(); }
         }
 
     }

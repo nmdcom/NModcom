@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -47,6 +48,10 @@ namespace NModcom
     public class FloatArraySimData : SimData, IFloatArray, IArray
     {
         private double[] value;
+
+        public FloatArraySimData() : this(null, null)
+        {
+        }
 
         public FloatArraySimData(ISimObj owner, double[] value) : base(owner)
         {
@@ -89,7 +94,7 @@ namespace NModcom
         public override string AsString
         {
             get { return ToString(); }
-            set 
+            set
             {
                 if (value == null || value.Length == 0)
                     this.value = new double[] { };
@@ -200,6 +205,13 @@ namespace NModcom
             get { return this.value; }
             set { this.value = value; }
         }
+
+        public override JToken AsJToken
+        {
+            get { return JToken.FromObject(value); }
+            set { this.value = value.ToObject<double[]>(); }
+        }
+
         #region IArray Members
 
         public object GetElement(int index)
@@ -365,6 +377,12 @@ namespace NModcom
             {
                 throw new Exception("NOT ALLOWED");
             }
+        }
+
+        public JToken AsJToken
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         #endregion

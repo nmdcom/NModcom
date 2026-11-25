@@ -25,6 +25,7 @@
 */
 
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -87,6 +88,12 @@ namespace NModcom
         }
 
         public abstract double[] AsFloatArray
+        {
+            get;
+            set;
+        }
+
+        public abstract JToken AsJToken
         {
             get;
             set;

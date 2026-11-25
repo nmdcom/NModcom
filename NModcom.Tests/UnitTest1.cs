@@ -68,31 +68,6 @@ namespace NModcom.Tests
             Assert.That(sim, Is.EqualTo(sim2));
         }
 
-        /// <summary>
-        /// This test creates a simulation, serializes it to a YAML file, deserializes from the same file, serializes 
-        /// to a second file, and compares the two files. The test is failed when the two files have dissimilar content.
-        /// </summary>
-        [Test]
-        public void TestYaml()
-        {
-            // create a simple simulation
-            ISimEnv simenv = CreateSimEnv();
-
-            // write simulation to file
-            string yaml = SimEnvWriter.WriteYaml(simenv);
-            Console.WriteLine(yaml);
-            SimEnvWriter.WriteYaml(simenv, "pp.yaml");
-
-            // create simulation from file
-            SimEnvReader sr = new SimEnvReader();
-            ISimEnv simenv2 = sr.LoadYaml("pp.yaml");
-
-            // write the new simulation to file
-            string yaml2 = SimEnvWriter.WriteYaml(simenv2);
-
-            Assert.That(yaml, Is.EqualTo(yaml2));
-        }
-
         private ISimEnv CreateSimEnv()
         {
             ISimEnv simenv = new SimEnv();

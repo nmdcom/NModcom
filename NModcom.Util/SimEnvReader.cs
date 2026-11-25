@@ -29,7 +29,6 @@ using System.Reflection;
 using System.IO;
 using System.Xml;
 using Newtonsoft.Json;
-using YamlDotNet.Serialization;
 
 
 namespace NModcom.Util
@@ -153,22 +152,6 @@ namespace NModcom.Util
             }
         }
 
-        public ISimEnv LoadYaml(string filename)
-        {
-            // load description of simulation
-            using (StreamReader sr = new StreamReader(filename))
-            {
-                string yaml = sr.ReadToEnd();
-                return ReadYaml(yaml);
-            }
-        }
-
-        private JSimEnv DeserializeYaml(string yaml)
-        {
-            var deserializer = new DeserializerBuilder().Build();
-            JSimEnv jsimenv = deserializer.Deserialize<JSimEnv>(yaml);
-            return jsimenv;
-        }
 
         private JSimEnv DeserializeJson(string json)
         {
@@ -209,14 +192,6 @@ namespace NModcom.Util
             return simenv;
         }
 
-        public ISimEnv ReadYaml(string yaml)
-        {
-            JSimEnv jsimenv = DeserializeYaml(yaml);
-            ISimEnv simenv = JSimEnvToSimEnv(jsimenv);
-            //// all done - return a ISimEnv that's ready to be connected with data and run
-            return simenv;
-        }
-
         private void LoadData(ISimEnv simEnv, JSimEnv jsimenv)
         {
             //Console.WriteLine("reading data");
@@ -239,11 +214,11 @@ namespace NModcom.Util
 
                     IData data = null;
                     if (datatype.Equals("FLOAT"))
-                        data = new ConstFloatSimData(null, jinput.Value);
+                        data = new ConstFloatSimData(null, jinput.Value.ToObject<double>());
                     else if (datatype.Equals("STRING"))
-                        data = new ConstStringSimData(null, jinput.Value);
+                        data = new ConstStringSimData(null, jinput.Value.ToObject<string>());
                     else if (datatype.Equals("INTEGER"))
-                        data = new ConstIntSimData(null, jinput.Value);
+                        data = new ConstIntSimData(null, jinput.Value.ToObject<int>());
                     else if (datatype.Equals("IDATA"))
                     {
                         if (jinput.Assembly != null
@@ -252,13 +227,19 @@ namespace NModcom.Util
                             && jinput.Class.Length > 0
                         )
                         {
-                            Assembly assembly = RunInfo.Info().LoadAssembly(jinput.Assembly);
-                            Type t = assembly.GetType(jinput.Class);
-                            ConstructorInfo c = t.GetConstructor(new Type[] { typeof(string) });
+                            // get a type object for the IData-derived class to be loaded
+                            Type type = Type.GetType($"{jinput.Class}, {jinput.Assembly}");
+
+                            // get the parameterless constructor
+                            ConstructorInfo c = type.GetConstructor(new Type[] { });
                             if (c == null)
-                                throw new Exception($"Constructor not found: {jinput.Assembly}.{t.Name}(string) ");
-                            object o = c.Invoke(new object[] { jinput.Value });
-                            data = o as IData;
+                                throw new Exception($"Constructor not found: {jinput.Assembly}.{type.Name}(string) ");
+
+                            // create the object using the found constructor
+                            data = c.Invoke(new object[] { }) as IData;
+
+                            // and set the value
+                            data.AsJToken = jinput.Value;
                         }
                     }
                     else

@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -103,6 +104,8 @@ namespace NModcom
             get { return (double[])GetValue(typeof(double[]), nameof(AsFloatArray)); }
             set { SetValue(typeof(double[]), nameof(AsFloatArray), value); }
         }
+
+        public override JToken AsJToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         /// <summary>
         /// Converts the value of this instance to a string.

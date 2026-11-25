@@ -25,6 +25,8 @@
 */
 
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -50,6 +52,10 @@ namespace NModcom
         /// <param name="value">The initial value of the wrapped string.</param>
         public ConstStringSimData(string value) :
             this(null, value)
+        {
+        }
+
+        public ConstStringSimData(): this(null, null)
         {
         }
 
@@ -122,6 +128,16 @@ namespace NModcom
         {
             get { throw new Exception("NOT ALLOWED"); }
             set { throw new Exception("NOT ALLOWED"); }
+        }
+
+        public override JToken AsJToken
+        {
+            get { 
+                return value == null ? new JValue(""): JToken.FromObject(value); 
+            }
+            set { 
+                this.value = value.ToObject<string>(); 
+            }
         }
 
     }

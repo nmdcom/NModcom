@@ -25,6 +25,7 @@
 */
 
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -113,6 +114,12 @@ namespace NModcom
         {
             get { return this._data; }
             set { this._data = value; }
+        }
+
+        public override JToken AsJToken
+        {
+            get { return JToken.FromObject(this._data);  }
+            set { this._data = null;  } 
         }
 
         #endregion

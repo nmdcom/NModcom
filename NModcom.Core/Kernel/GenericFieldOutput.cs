@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace NModcom
 {
@@ -205,6 +206,8 @@ namespace NModcom
                 throw new Exception("Sorry, you are not allowed to set this value");
             }
         }
+
+        public JToken AsJToken { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         //UITLEG
         /// <summary>
